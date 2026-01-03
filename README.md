@@ -23,8 +23,9 @@ fn main() {
     // 3. Print
     println!("{}", convert_to_ascii(&img, &config));
 }
+```
 
-#Examples
+## Examples
 <table>
   <tr>
     <th align="center">Input Image</th>
@@ -74,7 +75,6 @@ fn main() {
     </td>
   </tr>
 </table>
-```
 
 ## Configuration
 
