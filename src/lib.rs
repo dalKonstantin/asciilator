@@ -3,10 +3,16 @@ use image::{
     imageops::{FilterType, grayscale},
 };
 const ASCII_CHARS: &[u8] = b"@%#*+=-:. ";
+const SOLID_CHARS: &[&str] = &["█", "▓", "▒", "░", " "];
 
+pub enum ConvertType {
+    Ascii,
+    Solid,
+}
 pub struct AsciilatorConfig {
     pub width: u32,
     pub scale_factor: f64,
+    pub convert_type: ConvertType,
     //pub inverted: bool,
 }
 
@@ -15,6 +21,7 @@ impl Default for AsciilatorConfig {
         Self {
             width: 100,
             scale_factor: 0.55,
+            convert_type: ConvertType::Ascii,
         }
     }
 }
@@ -39,7 +46,16 @@ pub fn convert_to_ascii(img: &DynamicImage, config: &AsciilatorConfig) -> String
         let brightness = pixel[0];
         let char_index = brightness as usize * (ASCII_CHARS.len() - 1) / 255;
 
-        ascii_art.push(ASCII_CHARS[char_index] as char);
+        match config.convert_type {
+            ConvertType::Ascii => {
+                let idx = (brightness as usize * (ASCII_CHARS.len() - 1)) / 255;
+                ascii_art.push(ASCII_CHARS[idx] as char);
+            }
+            ConvertType::Solid => {
+                let idx = (brightness as usize * (SOLID_CHARS.len() - 1)) / 255;
+                ascii_art.push_str(SOLID_CHARS[idx]);
+            }
+        }
 
         if x == actual_width - 1 {
             ascii_art.push('\n');

@@ -7,6 +7,7 @@ fn main() {
     let config = AsciilatorConfig {
         width: 60,
         scale_factor: 0.55,
+        convert_type: asciilator::ConvertType::Ascii,
     };
     let result = convert_to_ascii(&image, &config);
 
